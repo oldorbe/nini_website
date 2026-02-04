@@ -15,63 +15,72 @@ public_folder: /uploads
 collections:
   - name: installations
     label: Installations
-    file: content/installations.json
-    fields:
-      - name: projects
-        label: Projects
-        widget: list
+    files:
+      - name: installations
+        label: Installations
+        file: content/installations.json
         fields:
-          - { name: id, label: ID, widget: string, hint: "URL slug, e.g. punchdrunk" }
-          - { name: title, label: Title, widget: string }
-          - { name: year, label: Year, widget: string }
-          - name: images
-            label: Images
+          - name: projects
+            label: Projects
             widget: list
-            summary: "{{fields.alt}}"
             fields:
-              - name: src
-                label: Image
-                widget: image
-                allow_multiple: false
-                required: false
-              - { name: alt, label: Alt text, widget: string, required: false }
+              - { name: id, label: ID, widget: string, hint: "URL slug, e.g. punchdrunk" }
+              - { name: title, label: Title, widget: string }
+              - { name: year, label: Year, widget: string }
+              - name: images
+                label: Images
+                widget: list
+                summary: "{{fields.alt}}"
+                fields:
+                  - name: src
+                    label: Image
+                    widget: image
+                    allow_multiple: false
+                    required: false
+                  - { name: alt, label: Alt text, widget: string, required: false }
 
   - name: videotapes
     label: Videotapes
-    file: content/videotapes.json
-    fields:
-      - name: projects
-        label: Projects
-        widget: list
+    files:
+      - name: videotapes
+        label: Videotapes
+        file: content/videotapes.json
         fields:
-          - { name: id, label: ID, widget: string, hint: "URL slug" }
-          - { name: title, label: Title, widget: string }
-          - { name: videoUrl, label: Video URL, widget: string, hint: "Embed URL, e.g. https://www.youtube.com/embed/..." }
-          - name: thumbnail
-            label: Thumbnail
-            widget: image
-            required: false
-          - { name: description, label: Description, widget: text, required: false }
+          - name: projects
+            label: Projects
+            widget: list
+            fields:
+              - { name: id, label: ID, widget: string, hint: "URL slug" }
+              - { name: title, label: Title, widget: string }
+              - { name: videoUrl, label: Video URL, widget: string, hint: "Embed URL, e.g. https://www.youtube.com/embed/..." }
+              - name: thumbnail
+                label: Thumbnail
+                widget: image
+                required: false
+              - { name: description, label: Description, widget: text, required: false }
 
   - name: texts
     label: Texts
-    file: content/texts.json
-    fields:
-      - name: entries
-        label: Entries
-        widget: list
+    files:
+      - name: texts
+        label: Texts
+        file: content/texts.json
         fields:
-          - { name: id, label: ID, widget: string, hint: "URL slug" }
-          - { name: title, label: Title, widget: string }
-          - name: featuredImage
-            label: Featured Image
-            widget: image
-            required: false
-          - { name: body, label: Body, widget: markdown, required: false }
-          - name: attachments
-            label: Attachments
+          - name: entries
+            label: Entries
             widget: list
-            required: false
             fields:
-              - { name: label, label: Label, widget: string }
-              - { name: url, label: URL, widget: string }
+              - { name: id, label: ID, widget: string, hint: "URL slug" }
+              - { name: title, label: Title, widget: string }
+              - name: featuredImage
+                label: Featured Image
+                widget: image
+                required: false
+              - { name: body, label: Body, widget: markdown, required: false }
+              - name: attachments
+                label: Attachments
+                widget: list
+                required: false
+                fields:
+                  - { name: label, label: Label, widget: string }
+                  - { name: url, label: URL, widget: string }
