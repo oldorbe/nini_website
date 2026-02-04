@@ -3,8 +3,8 @@
 # Set backend.repo to your GitHub/GitLab repo (e.g. owner/repo-name) and configure Identity for Netlify.
 
 backend:
-  name: github
-  repo: owner/repo-name   # Replace with your repo, e.g. myrelchernick/portfolio
+  name: git-gateway
+  repo: oldorbe/nini_website
   branch: main
   # Use proxy: true when deploying on Netlify and using Netlify Identity
   # proxy_url: /api/proxy (if using Netlify)
