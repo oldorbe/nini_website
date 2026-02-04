@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay"></div>
+    
+    <!-- Sidebar Navigation (Mobile) -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Artist Portfolio</h2>
+        </div>
+        <nav>
+            <ul class="sidebar-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li>
+                    <a href="installations.html">Installations</a>
+                    <ul class="submenu">
+                        <li><a href="project-detail.html?id=luminous-forms">Luminous Forms</a></li>
+                        <li><a href="project-detail.html?id=shadow-play">Shadow Play</a></li>
+                        <li><a href="project-detail.html?id=light-passages">Light Passages</a></li>
+                        <li><a href="project-detail.html?id=reflected-moments">Reflected Moments</a></li>
+                        <li><a href="project-detail.html?id=temporal-spaces">Temporal Spaces</a></li>
+                        <li><a href="project-detail.html?id=inner-light">Inner Light</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="videotapes.html">Videotapes</a>
+                    <ul class="submenu">
+                        <li><a href="video-detail.html?id=moving-light">Moving Light</a></li>
+                        <li><a href="video-detail.html?id=time-lapse">Time Lapse</a></li>
+                        <li><a href="video-detail.html?id=urban-rhythms">Urban Rhythms</a></li>
+                        <li><a href="video-detail.html?id=memory-traces">Memory Traces</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="images.html">Images</a>
+                    <ul class="submenu">
+                        <li><a href="images.html#nature">Nature</a></li>
+                        <li><a href="images.html#urban">Urban</a></li>
+                        <li><a href="images.html#abstract">Abstract</a></li>
+                        <li><a href="images.html#portraits">Portraits</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="texts.html">Texts</a>
+                    <ul class="submenu">
+                        <li><a href="texts.html#essays">Essays</a></li>
+                        <li><a href="texts.html#interviews">Interviews</a></li>
+                        <li><a href="texts.html#publications">Publications</a></li>
+                    </ul>
+                </li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Header -->
+    <header class="header">
+        <h1 class="logo"><a href="index.html">Artist Portfolio</a></h1>
+        
+        <!-- Mobile Menu Toggle -->
+        <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+        
+        <!-- Main Navigation (Desktop) -->
+        <nav>
+            <ul class="main-nav">
+                <li><a href="about.html">About</a></li>
+                <li class="dropdown">
+                    <a href="installations.html" class="dropdown-toggle">Installations</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="project-detail.html?id=luminous-forms">Luminous Forms</a></li>
+                        <li><a href="project-detail.html?id=shadow-play">Shadow Play</a></li>
+                        <li><a href="project-detail.html?id=light-passages">Light Passages</a></li>
+                        <li><a href="project-detail.html?id=reflected-moments">Reflected Moments</a></li>
+                        <li><a href="project-detail.html?id=temporal-spaces">Temporal Spaces</a></li>
+                        <li><a href="project-detail.html?id=inner-light">Inner Light</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="videotapes.html" class="dropdown-toggle">Videotapes</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="video-detail.html?id=moving-light">Moving Light</a></li>
+                        <li><a href="video-detail.html?id=time-lapse">Time Lapse</a></li>
+                        <li><a href="video-detail.html?id=urban-rhythms">Urban Rhythms</a></li>
+                        <li><a href="video-detail.html?id=memory-traces">Memory Traces</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="images.html" class="dropdown-toggle">Images</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="images.html#nature">Nature</a></li>
+                        <li><a href="images.html#urban">Urban</a></li>
+                        <li><a href="images.html#abstract">Abstract</a></li>
+                        <li><a href="images.html#portraits">Portraits</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="texts.html" class="dropdown-toggle">Texts</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="texts.html#essays">Essays</a></li>
+                        <li><a href="texts.html#interviews">Interviews</a></li>
+                        <li><a href="texts.html#publications">Publications</a></li>
+                    </ul>
+                </li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Slider -->
+        <section class="hero-slider">
+            <button class="slider-nav slider-prev" aria-label="Previous slide">‹</button>
+            
+            <div class="slider-container">
+                <div class="slide active">
+                    <img src="https://picsum.photos/seed/art1/900/600" alt="Artwork 1">
+                    <div class="slide-caption">Luminous Forms - 2023</div>
+                </div>
+                <div class="slide">
+                    <img src="https://picsum.photos/seed/art2/900/600" alt="Artwork 2">
+                    <div class="slide-caption">Shadow Play - 2022</div>
+                </div>
+                <div class="slide">
+                    <img src="https://picsum.photos/seed/art3/900/600" alt="Artwork 3">
+                    <div class="slide-caption">Light Passages - 2021</div>
+                </div>
+                <div class="slide">
+                    <img src="https://picsum.photos/seed/art4/900/600" alt="Artwork 4">
+                    <div class="slide-caption">Reflected Moments - 2020</div>
+                </div>
+            </div>
+            
+            <button class="slider-nav slider-next" aria-label="Next slide">›</button>
+            
+            <div class="slider-dots">
+                <button class="slider-dot active" aria-label="Slide 1"></button>
+                <button class="slider-dot" aria-label="Slide 2"></button>
+                <button class="slider-dot" aria-label="Slide 3"></button>
+                <button class="slider-dot" aria-label="Slide 4"></button>
+            </div>
+        </section>
+
+        <!-- Artist Bio Excerpt -->
+        <section class="about-excerpt" style="max-width: 800px; margin: 60px auto; text-align: center;">
+            <p style="line-height: 1.8; color: #555;">
+                A visual artist working with light, space, and language. Creating multimedia installations 
+                and single-channel video works that explore perception, memory, and the spaces between words. 
+                Based in New York City.
+            </p>
+            <hr style="border: none; border-top: 1px solid #ddd; margin: 30px auto; width: 100px;">
+        </section>
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

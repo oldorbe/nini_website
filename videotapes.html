@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Videotapes - Artist Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay"></div>
+    
+    <!-- Sidebar Navigation (Mobile) -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Artist Portfolio</h2>
+        </div>
+        <nav>
+            <ul class="sidebar-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li>
+                    <a href="installations.html">Installations</a>
+                    <ul class="submenu">
+                        <li><a href="project-detail.html?id=luminous-forms">Luminous Forms</a></li>
+                        <li><a href="project-detail.html?id=shadow-play">Shadow Play</a></li>
+                        <li><a href="project-detail.html?id=light-passages">Light Passages</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="videotapes.html">Videotapes</a>
+                    <ul class="submenu">
+                        <li><a href="video-detail.html?id=dangling-participles">Dangling Participles</a></li>
+                        <li><a href="video-detail.html?id=esprit-descalier">Esprit d'escalier</a></li>
+                        <li><a href="video-detail.html?id=sam-tanya-17">Sam Tanya 17</a></li>
+                        <li><a href="video-detail.html?id=out-my-window">Out my window</a></li>
+                        <li><a href="video-detail.html?id=she-and-i">She and I</a></li>
+                        <li><a href="video-detail.html?id=mommy-mommy">Mommy Mommy</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="images.html">Images</a>
+                </li>
+                <li>
+                    <a href="texts.html">Texts</a>
+                </li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Header -->
+    <header class="header">
+        <h1 class="logo"><a href="index.html">Artist Portfolio</a></h1>
+        
+        <!-- Mobile Menu Toggle -->
+        <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+        
+        <!-- Main Navigation (Desktop) -->
+        <nav>
+            <ul class="main-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li class="dropdown">
+                    <a href="installations.html" class="dropdown-toggle">Installations</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="project-detail.html?id=luminous-forms">Luminous Forms</a></li>
+                        <li><a href="project-detail.html?id=shadow-play">Shadow Play</a></li>
+                        <li><a href="project-detail.html?id=light-passages">Light Passages</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="videotapes.html" class="dropdown-toggle active">Videotapes</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="video-detail.html?id=dangling-participles">Dangling Participles</a></li>
+                        <li><a href="video-detail.html?id=esprit-descalier">Esprit d'escalier</a></li>
+                        <li><a href="video-detail.html?id=sam-tanya-17">Sam Tanya 17</a></li>
+                        <li><a href="video-detail.html?id=out-my-window">Out my window</a></li>
+                        <li><a href="video-detail.html?id=she-and-i">She and I</a></li>
+                        <li><a href="video-detail.html?id=mommy-mommy">Mommy Mommy</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="images.html" class="dropdown-toggle">Images</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="images.html#trees">Trees</a></li>
+                        <li><a href="images.html#maps">Maps</a></li>
+                        <li><a href="images.html#water">Water</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="texts.html" class="dropdown-toggle">Texts</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="texts.html#essays">Essays</a></li>
+                        <li><a href="texts.html#interviews">Interviews</a></li>
+                    </ul>
+                </li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <section class="gallery-grid" id="videotapes-gallery"></section>
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

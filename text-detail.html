@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text - Artist Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="sidebar-overlay"></div>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Artist Portfolio</h2>
+        </div>
+        <nav>
+            <ul class="sidebar-nav" id="sidebar-nav-list">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="installations.html">Installations</a></li>
+                <li><a href="videotapes.html">Videotapes</a></li>
+                <li><a href="images.html">Images</a></li>
+                <li><a href="texts.html">Texts</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <header class="header header-detail">
+        <h1 class="logo"><a href="index.html">Artist Portfolio</a></h1>
+        <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+        <nav>
+            <ul class="main-nav" id="main-nav-list">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li class="dropdown">
+                    <a href="installations.html" class="dropdown-toggle">Installations</a>
+                    <ul class="dropdown-menu" data-nav="installations"></ul>
+                </li>
+                <li class="dropdown">
+                    <a href="videotapes.html" class="dropdown-toggle">Videotapes</a>
+                    <ul class="dropdown-menu" data-nav="videotapes"></ul>
+                </li>
+                <li class="dropdown">
+                    <a href="images.html" class="dropdown-toggle">Images</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="images.html#trees">Trees</a></li>
+                        <li><a href="images.html#maps">Maps</a></li>
+                        <li><a href="images.html#water">Water</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="texts.html" class="dropdown-toggle active">Texts</a>
+                    <ul class="dropdown-menu" data-nav="texts"></ul>
+                </li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <nav class="breadcrumb-container">
+        <div class="breadcrumb">
+            <a href="texts.html">Texts</a> » <span id="text-detail-breadcrumb">Text</span>
+        </div>
+    </nav>
+
+    <main class="main-content detail-page">
+        <article class="project-detail">
+            <img id="text-detail-image" src="" alt="" style="max-width: 100%; height: auto; margin-bottom: 1.5rem; display: none;">
+            <h2 id="text-detail-title" class="project-year" style="margin-bottom: 1rem;"></h2>
+            <div id="text-detail-body" class="text-body"></div>
+            <div id="text-detail-attachments" style="margin-top: 1.5rem; display: none;"></div>
+        </article>
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

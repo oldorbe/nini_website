@@ -1,0 +1,60 @@
+{
+  "projects": [
+    {
+      "id": "dangling-participles",
+      "title": "Dangling Participles",
+      "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      "thumbnail": "https://picsum.photos/seed/vidDang/300/250",
+      "description": "Video description placeholder."
+    },
+    {
+      "id": "esprit-descalier",
+      "title": "Esprit d'escalier",
+      "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      "thumbnail": "https://picsum.photos/seed/vidEsprit/300/200",
+      "description": "Video description placeholder."
+    },
+    {
+      "id": "sam-tanya-17",
+      "title": "Sam Tanya 17",
+      "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      "thumbnail": "https://picsum.photos/seed/vidSam/300/180",
+      "description": "Video description placeholder."
+    },
+    {
+      "id": "out-my-window",
+      "title": "Out my window",
+      "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      "thumbnail": "https://picsum.photos/seed/vidWindow/300/220",
+      "description": "Video description placeholder."
+    },
+    {
+      "id": "she-and-i",
+      "title": "She and I",
+      "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      "thumbnail": "https://picsum.photos/seed/vidShe/300/190",
+      "description": "Video description placeholder."
+    },
+    {
+      "id": "mommy-mommy",
+      "title": "Mommy Mommy",
+      "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      "thumbnail": "https://picsum.photos/seed/vidMommy/300/240",
+      "description": "Video description placeholder."
+    },
+    {
+      "id": "she-was-she-wasnt",
+      "title": "She was, she wasn't",
+      "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      "thumbnail": "https://picsum.photos/seed/vidShewas/300/210",
+      "description": "Video description placeholder."
+    },
+    {
+      "id": "she-was-french",
+      "title": "She was, she wasn't French version",
+      "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      "thumbnail": "https://picsum.photos/seed/vidFrench/300/200",
+      "description": "Video description placeholder."
+    }
+  ]
+}

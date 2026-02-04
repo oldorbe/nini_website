@@ -1,0 +1,77 @@
+# Decap CMS config - Artist Portfolio
+# See https://decapcms.org/docs/configuration-options/
+# Set backend.repo to your GitHub/GitLab repo (e.g. owner/repo-name) and configure Identity for Netlify.
+
+backend:
+  name: github
+  repo: owner/repo-name   # Replace with your repo, e.g. myrelchernick/portfolio
+  branch: main
+  # Use proxy: true when deploying on Netlify and using Netlify Identity
+  # proxy_url: /api/proxy (if using Netlify)
+
+media_folder: content/uploads
+public_folder: /uploads
+
+collections:
+  - name: installations
+    label: Installations
+    file: content/installations.json
+    fields:
+      - name: projects
+        label: Projects
+        widget: list
+        fields:
+          - { name: id, label: ID, widget: string, hint: "URL slug, e.g. punchdrunk" }
+          - { name: title, label: Title, widget: string }
+          - { name: year, label: Year, widget: string }
+          - name: images
+            label: Images
+            widget: list
+            summary: "{{fields.alt}}"
+            fields:
+              - name: src
+                label: Image
+                widget: image
+                allow_multiple: false
+                required: false
+              - { name: alt, label: Alt text, widget: string, required: false }
+
+  - name: videotapes
+    label: Videotapes
+    file: content/videotapes.json
+    fields:
+      - name: projects
+        label: Projects
+        widget: list
+        fields:
+          - { name: id, label: ID, widget: string, hint: "URL slug" }
+          - { name: title, label: Title, widget: string }
+          - { name: videoUrl, label: Video URL, widget: string, hint: "Embed URL, e.g. https://www.youtube.com/embed/..." }
+          - name: thumbnail
+            label: Thumbnail
+            widget: image
+            required: false
+          - { name: description, label: Description, widget: text, required: false }
+
+  - name: texts
+    label: Texts
+    file: content/texts.json
+    fields:
+      - name: entries
+        label: Entries
+        widget: list
+        fields:
+          - { name: id, label: ID, widget: string, hint: "URL slug" }
+          - { name: title, label: Title, widget: string }
+          - name: featuredImage
+            label: Featured Image
+            widget: image
+            required: false
+          - { name: body, label: Body, widget: markdown, required: false }
+          - name: attachments
+            label: Attachments
+            widget: list
+            required: false
+            fields:
+              - { name: label, label: Label, widget: string }
+              - { name: url, label: URL, widget: string }

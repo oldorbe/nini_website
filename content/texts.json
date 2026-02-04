@@ -1,0 +1,46 @@
+{
+  "entries": [
+    {
+      "id": "mapping-maternal",
+      "title": "Mapping the Maternal: Art, Ethics and the Anthropocene",
+      "featuredImage": "https://picsum.photos/seed/text1/400/300",
+      "body": "Sample body text. Replace in Decap CMS.",
+      "attachments": []
+    },
+    {
+      "id": "m-word",
+      "title": "The M Word",
+      "featuredImage": "https://picsum.photos/seed/text2/400/300",
+      "body": "Sample body text.",
+      "attachments": []
+    },
+    {
+      "id": "maternal-metaphors",
+      "title": "Maternal Metaphors catalog",
+      "featuredImage": "https://picsum.photos/seed/text3/400/300",
+      "body": "Sample body text.",
+      "attachments": []
+    },
+    {
+      "id": "time-passes",
+      "title": "Time Passes",
+      "featuredImage": "https://picsum.photos/seed/text4/400/300",
+      "body": "Sample body text.",
+      "attachments": []
+    },
+    {
+      "id": "living-cobwebs",
+      "title": "Living With Cobwebs",
+      "featuredImage": "https://picsum.photos/seed/text5/400/300",
+      "body": "Sample body text.",
+      "attachments": []
+    },
+    {
+      "id": "studio-visit",
+      "title": "The Studio Visit",
+      "featuredImage": "https://picsum.photos/seed/text6/400/300",
+      "body": "Sample body text.",
+      "attachments": []
+    }
+  ]
+}
