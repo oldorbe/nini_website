@@ -6,12 +6,12 @@
       "year": "2026",
       "images": [
         {
-          "src": "https://picsum.photos/seed/punchdrunk1/1200/825",
-          "alt": "Punchdrunk - View 1"
+          "src": "https://i.imgur.com/1NT2bju.jpeg",
+          "alt": "Pyramid Passport Photo"
         },
         {
-          "src": "https://picsum.photos/seed/punchdrunk2/1200/825",
-          "alt": "Punchdrunk - View 2"
+          "src": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Rhodes0211.jpg",
+          "alt": "The Colossus of Rhodes"
         },
         {
           "src": "https://picsum.photos/seed/punchdrunk3/1200/825",
@@ -24,10 +24,6 @@
         {
           "src": "https://picsum.photos/seed/punchdrunk5/1200/825",
           "alt": "Punchdrunk - View 5"
-        },
-        {
-          "src": "https://i.imgur.com/1NT2bju.jpeg",
-          "alt": "Pyramid Passport Photo"
         }
       ]
     },
@@ -37,8 +33,8 @@
       "year": "2022",
       "images": [
         {
-          "src": "https://picsum.photos/seed/dangE1/1200/825",
-          "alt": "Dangling Participles - View 1"
+          "src": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Rhodes0211.jpg",
+          "alt": "羅得島太陽神巨像"
         },
         {
           "src": "https://picsum.photos/seed/dangling-participles2/1200/825",
