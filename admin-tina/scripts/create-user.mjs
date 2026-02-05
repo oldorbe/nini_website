@@ -38,8 +38,9 @@ async function prompt(question) {
 }
 
 async function main() {
-  const kvUrl = process.env.KV_REST_API_URL;
-  const kvToken = process.env.KV_REST_API_TOKEN;
+  // Remove quotes if present in env vars
+  let kvUrl = (process.env.KV_REST_API_URL || "").replace(/^["']|["']$/g, "").trim();
+  let kvToken = (process.env.KV_REST_API_TOKEN || "").replace(/^["']|["']$/g, "").trim();
 
   if (!kvUrl || !kvToken) {
     console.error("Error: KV_REST_API_URL and KV_REST_API_TOKEN must be set.\n");
@@ -84,24 +85,28 @@ async function main() {
 
   console.log(`\nCreating user "${username}" in Redis...`);
   console.log(`Key: ${userKey}`);
+  console.log(`URL: ${kvUrl}`);
 
   try {
-    const response = await fetch(kvUrl, {
-      method: "POST",
+    // Upstash REST API format: POST to /set/:key/:value or use pipeline
+    // Using the simpler direct endpoint format
+    const setUrl = `${kvUrl}/set/${encodeURIComponent(userKey)}/${encodeURIComponent(JSON.stringify(userData))}`;
+    
+    const response = await fetch(setUrl, {
+      method: "GET",  // Upstash REST API uses GET for simple commands
       headers: {
         Authorization: `Bearer ${kvToken}`,
-        "Content-Type": "application/json",
       },
-      body: JSON.stringify(["SET", userKey, JSON.stringify(userData)]),
     });
 
-    if (!response.ok) {
-      const text = await response.text();
-      throw new Error(`Redis request failed: ${response.status} - ${text}`);
+    const result = await response.json();
+    
+    if (result.error) {
+      throw new Error(result.error);
     }
 
-    const result = await response.json();
     console.log("\n✅ User created successfully!");
+    console.log(`Redis response:`, result);
     console.log(`\nYou can now login at your TinaCMS admin with:`);
     console.log(`  Username: ${username}`);
     console.log(`  Password: (the password you entered)\n`);
