@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initProjectGallery();
     initDropdownMenu();
     initProjectNavigation();
-    initInstallationsGallery();
+    initImagesGallery();
     initVideotapesGallery();
     initTextsGallery();
     initVideoDetailPage();
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
 /**
  * Render images list from content into #images-gallery
  */
-function initInstallationsGallery() {
+function initImagesGallery() {
     const container = document.getElementById('images-gallery');
     if (!container) return;
     loadContent(CONTENT_PATHS.images).then(function(data) {

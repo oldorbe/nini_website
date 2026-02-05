@@ -5,7 +5,7 @@ export default function Home() {
     <main className="min-h-screen flex flex-col items-center justify-center p-8">
       <h1 className="text-2xl font-semibold mb-4">Content Admin</h1>
       <p className="text-gray-600 mb-6 text-center max-w-md">
-        Edit Installations, Videotapes, and Texts. Changes are saved to the
+        Edit Images, Videotapes, and Texts. Changes are saved to the
         GitHub repo and appear on the main site (GitHub Pages) after deploy.
       </p>
       <Link
