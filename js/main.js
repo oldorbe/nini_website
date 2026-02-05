@@ -169,10 +169,10 @@ function initNavFromContent() {
         var vid = results[1].projects || [];
         var txt = results[2].entries || [];
         var dropMenus = document.querySelectorAll('.main-nav .dropdown .dropdown-menu');
-        if (dropMenus.length >= 4) {
+        if (dropMenus.length >= 3) {
             dropMenus[0].innerHTML = renderImages(inst);
             dropMenus[1].innerHTML = renderVideotapes(vid);
-            dropMenus[3].innerHTML = renderTexts(txt);
+            dropMenus[2].innerHTML = renderTexts(txt);
         }
         document.querySelectorAll('.sidebar-nav > li').forEach(function(li) {
             var a = li.querySelector('a');

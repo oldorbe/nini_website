@@ -22,10 +22,18 @@
             <ul class="sidebar-nav">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
-                <li><a href="images.html">Images</a></li>
-                <li><a href="videotapes.html">Videotapes</a></li>
-                <li><a href="images.html">Images</a></li>
-                <li><a href="texts.html">Texts</a></li>
+                <li>
+                    <a href="images.html">Images</a>
+                    <ul class="submenu"></ul>
+                </li>
+                <li>
+                    <a href="videotapes.html">Videotapes</a>
+                    <ul class="submenu"></ul>
+                </li>
+                <li>
+                    <a href="texts.html">Texts</a>
+                    <ul class="submenu"></ul>
+                </li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
@@ -45,28 +53,15 @@
                 <li><a href="about.html">About</a></li>
                 <li class="dropdown">
                     <a href="images.html" class="dropdown-toggle active">Images</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="project-detail.html?id=punchdrunk">Punchdrunk</a></li>
-                        <li><a href="project-detail.html?id=dangling-participles">Dangling Participles</a></li>
-                        <li><a href="project-detail.html?id=domestic-interventions">Domestic Interventions</a></li>
-                        <li><a href="project-detail.html?id=she-was-she-wasnt">She was, she wasn't</a></li>
-                        <li><a href="project-detail.html?id=your-hands-are-tied">Your Hands Are Tied</a></li>
-                        <li><a href="project-detail.html?id=room-full-of-women">A Room Full of Women</a></li>
-                    </ul>
+                    <ul class="dropdown-menu" data-nav="images"></ul>
                 </li>
                 <li class="dropdown">
                     <a href="videotapes.html" class="dropdown-toggle">Videotapes</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="video-detail.html?id=dangling-participles">Dangling Participles</a></li>
-                        <li><a href="video-detail.html?id=esprit-descalier">Esprit d'escalier</a></li>
-                        <li><a href="video-detail.html?id=mommy-mommy">Mommy Mommy</a></li>
-                    </ul>
+                    <ul class="dropdown-menu" data-nav="videotapes"></ul>
                 </li>
                 <li class="dropdown">
                     <a href="texts.html" class="dropdown-toggle">Texts</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="texts.html#essays">Essays</a></li>
-                    </ul>
+                    <ul class="dropdown-menu" data-nav="texts"></ul>
                 </li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
@@ -75,6 +70,7 @@
 
     <!-- Main Content -->
     <main class="main-content">
+        <h2 class="page-title">Images</h2>
         <section class="gallery-grid" id="images-gallery"></section>
     </main>
 
