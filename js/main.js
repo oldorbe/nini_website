@@ -111,13 +111,25 @@ document.addEventListener('DOMContentLoaded', function() {
     initNavFromContent();
 });
 
+/** Cached site heading from site.json (set by initSiteHeading); use for document.title */
+function getSiteTitle() {
+    return (typeof window !== 'undefined' && window.__siteHeading) ? window.__siteHeading : SITE_TITLE;
+}
+
 /**
- * Load site.json and set heading in logo and sidebar (all pages).
+ * Load site.json and set heading in logo, sidebar, and browser tab (all pages).
  */
 function initSiteHeading() {
     loadContent(CONTENT_PATHS.site).then(function(data) {
         var heading = (data && data.heading) ? String(data.heading).trim() : SITE_TITLE;
+        window.__siteHeading = heading;
         document.querySelectorAll('.logo a, .sidebar-header h2').forEach(function(el) { el.textContent = heading; });
+        var t = document.title;
+        if (t.indexOf(' - ') !== -1) {
+            document.title = t.replace(/\s*-\s*[\s\S]*$/, ' - ' + heading);
+        } else {
+            document.title = heading;
+        }
     });
 }
 
@@ -278,7 +290,7 @@ function initVideoDetailPage() {
         var project = id ? projects.find(function(p) { return p.id === id; }) : projects[0];
         if (!project) return;
         document.getElementById('video-title').textContent = project.title;
-        document.title = project.title + ' - ' + SITE_TITLE;
+        document.title = project.title + ' - ' + getSiteTitle();
         embed.src = project.videoUrl || '';
         var infoTitle = document.getElementById('video-info-title');
         if (infoTitle) infoTitle.textContent = project.title;
@@ -307,7 +319,7 @@ function initTextDetailPage() {
         var entries = data.entries || [];
         var entry = id ? entries.find(function(e) { return e.id === id; }) : entries[0];
         if (!entry) return;
-        document.title = entry.title + ' - ' + SITE_TITLE;
+        document.title = entry.title + ' - ' + getSiteTitle();
         var breadcrumbEl = document.getElementById('text-detail-breadcrumb');
         if (breadcrumbEl) breadcrumbEl.textContent = entry.title;
         var titleEl = document.getElementById('text-detail-title');
@@ -656,7 +668,7 @@ function initProjectNavigation() {
 
         if (projectTitleEl) projectTitleEl.textContent = currentProject.title;
         if (projectYearEl) projectYearEl.textContent = currentProject.year;
-        document.title = currentProject.title + ' - ' + SITE_TITLE;
+        document.title = currentProject.title + ' - ' + getSiteTitle();
 
         if (currentProject.images && currentProject.images[0]) {
             if (mainImage) { mainImage.src = currentProject.images[0].src; mainImage.alt = currentProject.images[0].alt; }
