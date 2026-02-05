@@ -1,0 +1,21 @@
+{
+  "slides": [
+    {
+      "image": "https://picsum.photos/seed/art1/900/600",
+      "caption": "Luminous Forms - 2023"
+    },
+    {
+      "image": "https://picsum.photos/seed/art2/900/600",
+      "caption": "Shadow Play - 2022"
+    },
+    {
+      "image": "https://picsum.photos/seed/art3/900/600",
+      "caption": "Light Passages - 2021"
+    },
+    {
+      "image": "https://picsum.photos/seed/art4/900/600",
+      "caption": "Reflected Moments - 2020"
+    }
+  ],
+  "excerpt": "A visual artist working with light, space, and language. Creating multimedia installations and single-channel video works that explore perception, memory, and the spaces between words. Based in New York City."
+}

@@ -2,6 +2,9 @@ import { defineConfig, LocalAuthProvider, AbstractAuthProvider } from "tinacms";
 import { imagesCollection } from "./collections/images";
 import { videotapesCollection } from "./collections/videotapes";
 import { textsCollection } from "./collections/texts";
+import { siteCollection } from "./collections/site";
+import { homeCollection } from "./collections/home";
+import { aboutCollection } from "./collections/about";
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === "true";
 
@@ -74,6 +77,9 @@ export default defineConfig({
   },
   schema: {
     collections: [
+      siteCollection,
+      homeCollection,
+      aboutCollection,
       imagesCollection,
       videotapesCollection,
       textsCollection,

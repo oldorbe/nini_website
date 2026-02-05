@@ -10,12 +10,29 @@ const SITE_TITLE = 'Artist Portfolio';
 
 /** Content paths (must match admin/config.yml and content/ files) */
 const CONTENT_PATHS = {
+    site: 'content/site.json',
+    home: 'content/home.json',
+    about: 'content/about.json',
     images: 'content/images.json',
     videotapes: 'content/videotapes.json',
     texts: 'content/texts.json'
 };
 
 /** Fallback data when fetch fails (e.g. opening HTML from file://) */
+const FALLBACK_SITE = { heading: 'Artist Portfolio' };
+const FALLBACK_HOME = {
+    slides: [
+        { image: 'https://picsum.photos/seed/art1/900/600', caption: 'Luminous Forms - 2023' },
+        { image: 'https://picsum.photos/seed/art2/900/600', caption: 'Shadow Play - 2022' },
+        { image: 'https://picsum.photos/seed/art3/900/600', caption: 'Light Passages - 2021' },
+        { image: 'https://picsum.photos/seed/art4/900/600', caption: 'Reflected Moments - 2020' }
+    ],
+    excerpt: 'A visual artist working with light, space, and language. Creating multimedia installations and single-channel video works that explore perception, memory, and the spaces between words. Based in New York City.'
+};
+const FALLBACK_ABOUT = {
+    body: '<p>A visual artist and writer based in New York City.</p><p>During the 1990s, the artist developed and curated Maternal Metaphors.</p>',
+    resumeUrl: 'resume.html'
+};
 const FALLBACK_IMAGES = {
     projects: [
         { id: 'punchdrunk', title: 'Punchdrunk', year: '2023', images: [{ src: 'https://picsum.photos/seed/punchdrunk1/1200/825', alt: 'Punchdrunk - View 1' }, { src: 'https://picsum.photos/seed/punchdrunk2/1200/825', alt: 'Punchdrunk - View 2' }, { src: 'https://picsum.photos/seed/punchdrunk3/1200/825', alt: 'Punchdrunk - View 3' }, { src: 'https://picsum.photos/seed/punchdrunk4/1200/825', alt: 'Punchdrunk - View 4' }, { src: 'https://picsum.photos/seed/punchdrunk5/1200/825', alt: 'Punchdrunk - View 5' }] },
@@ -66,6 +83,9 @@ const FALLBACK_TEXTS = {
  */
 function loadContent(path) {
     const fallbacks = {
+        [CONTENT_PATHS.site]: FALLBACK_SITE,
+        [CONTENT_PATHS.home]: FALLBACK_HOME,
+        [CONTENT_PATHS.about]: FALLBACK_ABOUT,
         [CONTENT_PATHS.images]: FALLBACK_IMAGES,
         [CONTENT_PATHS.videotapes]: FALLBACK_VIDEOTAPES,
         [CONTENT_PATHS.texts]: FALLBACK_TEXTS
@@ -77,7 +97,9 @@ function loadContent(path) {
 
 document.addEventListener('DOMContentLoaded', function() {
     initMobileMenu();
-    initSlider();
+    initSiteHeading();
+    initHomePage();
+    initAboutPage();
     initProjectGallery();
     initDropdownMenu();
     initProjectNavigation();
@@ -88,6 +110,60 @@ document.addEventListener('DOMContentLoaded', function() {
     initTextDetailPage();
     initNavFromContent();
 });
+
+/**
+ * Load site.json and set heading in logo and sidebar (all pages).
+ */
+function initSiteHeading() {
+    loadContent(CONTENT_PATHS.site).then(function(data) {
+        var heading = (data && data.heading) ? String(data.heading).trim() : SITE_TITLE;
+        document.querySelectorAll('.logo a, .sidebar-header h2').forEach(function(el) { el.textContent = heading; });
+    });
+}
+
+/**
+ * Home page: hero slider and excerpt from content/home.json. Calls initSlider after rendering.
+ */
+function initHomePage() {
+    var slider = document.querySelector('.hero-slider');
+    if (!slider) return;
+    var container = slider.querySelector('.slider-container');
+    var dotsWrap = slider.querySelector('.slider-dots');
+    loadContent(CONTENT_PATHS.home).then(function(data) {
+        var slides = (data && data.slides) ? data.slides : [];
+        if (container && slides.length > 0) {
+            container.innerHTML = slides.map(function(s, i) {
+                var img = (s.image || '').trim();
+                var cap = escapeHtml((s.caption || '').trim());
+                return '<div class="slide' + (i === 0 ? ' active' : '') + '"><img src="' + (img || '') + '" alt="' + cap + '"><div class="slide-caption">' + cap + '</div></div>';
+            }).join('');
+        }
+        if (dotsWrap && slides.length > 0) {
+            dotsWrap.innerHTML = slides.map(function(_, i) {
+                return '<button class="slider-dot' + (i === 0 ? ' active' : '') + '" aria-label="Slide ' + (i + 1) + '"></button>';
+            }).join('');
+        }
+        initSlider();
+        var excerptEl = document.getElementById('home-excerpt');
+        if (excerptEl && data && data.excerpt) {
+            excerptEl.textContent = data.excerpt;
+        }
+    });
+}
+
+/**
+ * About page: body and resume link from content/about.json.
+ */
+function initAboutPage() {
+    var wrap = document.getElementById('about-content');
+    if (!wrap) return;
+    loadContent(CONTENT_PATHS.about).then(function(data) {
+        if (!data) return;
+        var body = (data.body || '').trim();
+        var resumeUrl = (data.resumeUrl || 'resume.html').trim();
+        wrap.innerHTML = '<h2>About</h2>' + (body ? body : '') + '<p class="mt-20"><a href="' + escapeHtml(resumeUrl) + '">Resume »</a></p>';
+    });
+}
 
 /**
  * Render images list from content into #images-gallery
