@@ -65,10 +65,11 @@ export default defineConfig({
     outputFolder: "admin",
   },
   media: {
+    // Use Git-backed media storage (uploads go to GitHub repo)
     tina: {
       mediaRoot: "content/uploads",
       publicFolder: "",
-      static: true,
+      // static: false enables upload functionality
     },
   },
   schema: {
