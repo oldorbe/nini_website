@@ -68,11 +68,13 @@ export default defineConfig({
     outputFolder: "admin",
   },
   media: {
-    // Use Git-backed media storage (uploads go to GitHub repo)
+    // Repo-based media: files stored in repo at content/uploads (GitHub).
+    // For Next.js, publicFolder must be "public"; mediaRoot is relative to it.
+    // Ensure admin-tina/public/content is a symlink to ../content so public/content/uploads exists.
     tina: {
+      publicFolder: "public",
       mediaRoot: "content/uploads",
-      publicFolder: "",
-      // static: false enables upload functionality
+      static: false, // allow upload/delete in editor
     },
   },
   schema: {
