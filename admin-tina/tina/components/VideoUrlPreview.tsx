@@ -23,11 +23,8 @@ function toEmbedUrl(url: string): string | null {
   return null;
 }
 
-function VideoUrlPreview({
-  input,
-}: {
-  input: { value: string; onChange: (v: string) => void };
-}) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function VideoUrlPreview({ input }: any) {
   const embedSrc = toEmbedUrl(input.value || "");
 
   return (

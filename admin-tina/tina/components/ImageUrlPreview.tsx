@@ -17,12 +17,8 @@ function previewSrc(value: string): string | null {
   return `/${v.replace(/^\//, "")}`;
 }
 
-function ImageUrlPreview(props: {
-  input: { value: string; onChange: (v: string) => void };
-  field: unknown;
-  meta: unknown;
-  form: unknown;
-}) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function ImageUrlPreview(props: any) {
   const { input } = props;
   const src = (input.value || "").trim();
   const showPreview = src && (isImageUrl(src) || src.startsWith("/") || !src.includes("://"));

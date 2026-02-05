@@ -5,9 +5,8 @@ import { wrapFieldsWithMeta } from "tinacms";
  * Rich Text Editor with Edit/Preview tabs.
  * Stores HTML string directly (supports colors, formatting, etc.)
  */
-function RichTextEditorInner(props: {
-  input: { value: string; onChange: (v: string) => void };
-}) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function RichTextEditorInner(props: any) {
   const { input } = props;
   const [activeTab, setActiveTab] = useState<"edit" | "preview">("edit");
   const editorRef = useRef<HTMLDivElement>(null);

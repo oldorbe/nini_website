@@ -5,9 +5,8 @@ import { wrapFieldsWithMeta } from "tinacms";
  * Custom editor with three tabs: Rich Text (contenteditable), Markdown source, Preview.
  * Stores plain markdown string.
  */
-function MarkdownEditorInner(props: {
-  input: { value: string; onChange: (v: string) => void };
-}) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function MarkdownEditorInner(props: any) {
   const { input } = props;
   const [activeTab, setActiveTab] = useState<"rich" | "markdown" | "preview">("rich");
   const editorRef = useRef<HTMLDivElement>(null);

@@ -26,8 +26,9 @@ export default defineConfig({
     },
   },
   schema: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     collections: [
-      TinaUserCollection,
+      TinaUserCollection as any,
       installationsCollection,
       videotapesCollection,
       textsCollection,
