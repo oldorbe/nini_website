@@ -3,10 +3,10 @@
     {
       "name": "Admin",
       "email": "admin@example.com",
-      "username": "tinauser",
+      "username": "admin",
       "password": {
-        "value": "tinarocks",
-        "passwordChangeRequired": true
+        "value": "7fcf4ba391c48784edde599889d6e3f1e47a27db36ecc050cc92f259bfac38afad2c68a1ae804d77075e8fb722503f3eca2b2c1006ee6f6c7b7628cb45fffd1d",
+        "passwordChangeRequired": false
       }
     }
   ]
