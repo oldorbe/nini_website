@@ -1,0 +1,19 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build / Next
+.next
+out
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Tina generated
+tina/__generated__
+
+# Misc
+*.log
+.DS_Store

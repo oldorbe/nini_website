@@ -207,7 +207,15 @@ function initVideoDetailPage() {
         var infoTitle = document.getElementById('video-info-title');
         if (infoTitle) infoTitle.textContent = project.title;
         var desc = document.getElementById('video-description');
-        if (desc) desc.textContent = project.description || '';
+        if (desc) {
+            var descRaw = project.description || '';
+            var descIsHtml = descRaw.trim().startsWith('<') || /<[a-z][\s\S]*>/i.test(descRaw);
+            if (descIsHtml) {
+                desc.innerHTML = descRaw;
+            } else {
+                desc.textContent = descRaw;
+            }
+        }
     });
 }
 
@@ -231,7 +239,13 @@ function initTextDetailPage() {
         var imgEl = document.getElementById('text-detail-image');
         if (imgEl && entry.featuredImage) { imgEl.src = entry.featuredImage; imgEl.alt = entry.title; imgEl.style.display = ''; } else if (imgEl) imgEl.style.display = 'none';
         var raw = entry.body || '';
-        container.innerHTML = (typeof marked !== 'undefined' && marked.parse) ? marked.parse(raw) : escapeHtml(raw).replace(/\n/g, '<br>');
+        // If body looks like HTML (starts with < or contains tags), render directly; otherwise use marked or escape
+        var isHtml = raw.trim().startsWith('<') || /<[a-z][\s\S]*>/i.test(raw);
+        if (isHtml) {
+            container.innerHTML = raw;
+        } else {
+            container.innerHTML = (typeof marked !== 'undefined' && marked.parse) ? marked.parse(raw) : escapeHtml(raw).replace(/\n/g, '<br>');
+        }
         var attachEl = document.getElementById('text-detail-attachments');
         if (attachEl && entry.attachments && entry.attachments.length) {
             attachEl.innerHTML = entry.attachments.map(function(a) {

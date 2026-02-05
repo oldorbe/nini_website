@@ -196,6 +196,12 @@ backend:
 
 ---
 
+## 替代方案：Tina CMS 自托管（Vercel）
+
+若希望后台部署在 **Vercel** 并使用 **Tina CMS** 自托管，可改用本仓库中的 **admin-tina** 应用：前台仍由 GitHub Pages 提供且不改动，内容仍存于同一 GitHub 仓库的 `content/`；编辑在 Vercel 上的 Tina 后台完成，保存后推送到 GitHub，Pages 自动更新。详见 **[admin-tina/README.md](../admin-tina/README.md)**。采用 Tina 后建议仅使用一套后台，不再同时用 Decap 编辑同一批 `content/*.json`，以免冲突。
+
+---
+
 ## 延伸阅读
 
 - **[墙内建站与托管说明](hosting-access-china.md)** — 若站点需在中国大陆被稳定访问，可参考国内托管及与 GitHub Pages / Decap 的配合方式。
