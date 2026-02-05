@@ -11,7 +11,7 @@ declare module "busboy" {
     mimeType?: string;
   }
 
-  interface Busboy {
+  interface Busboy extends NodeJS.WritableStream {
     on(
       event: "file",
       callback: (
@@ -19,9 +19,9 @@ declare module "busboy" {
         file: NodeJS.ReadableStream,
         info: FileInfo
       ) => void
-    ): void;
-    on(event: "error", callback: (err: Error) => void): void;
-    on(event: "close", callback: () => void): void;
+    ): this;
+    on(event: "error", callback: (err: Error) => void): this;
+    on(event: "close", callback: () => void): this;
   }
 
   interface BusboyConstructor {
