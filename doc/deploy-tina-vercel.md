@@ -10,6 +10,23 @@
 
 ---
 
+## Root Directory 与 content / UI 的关系
+
+设置 **Root Directory = `admin-tina`** 之后：
+
+- **Vercel 只构建和运行 `admin-tina` 里的代码**  
+  构建命令、启动的 Next.js 都在 `admin-tina/` 下执行，所以 **UI（页面、接口）** 自然就是 `admin-tina` 里的 `app/`、`pages/`、`public/` 等，不需要再单独“告诉” Vercel 哪里是 UI。
+
+- **content 不在 Vercel 机器上，而在 GitHub 仓库里**  
+  生产环境下 Tina 不用本机磁盘上的 `content/`，而是通过 **GitHub Provider** 用 API 读写你仓库里的文件。  
+  - 仓库由环境变量 `GITHUB_OWNER`、`GITHUB_REPO`、`GITHUB_BRANCH` 指定。  
+  - 各 collection 里的 `path: "content"` 表示**该仓库根目录下的 `content/` 文件夹**，例如 `content/installations.json`。  
+  因此：**content 的位置 = 你 GitHub 仓库里的 `content/`**，和 Vercel 上有没有这个文件夹无关。
+
+- **本地开发时** 才会用到本地的 `content/`（或通过 `admin-tina/content` → `../content` 的 symlink），方便 Tina 读本地文件；部署到 Vercel 后只连 GitHub，不依赖部署包里的 `content`。
+
+---
+
 ## 一、准备环境变量
 
 部署前需要准备好以下变量的值，并在 Vercel 里填写。
@@ -72,26 +89,43 @@
 | **Build Command** | `npm run build`（默认即可） |
 | **Install Command** | `npm install --legacy-peer-deps`（若已按项目 `vercel.json` 配置则可留空） |
 
-### 3. 添加环境变量
+### 3. 环境变量（Environment Variables）
 
-在 **Environment Variables** 里添加（Production、Preview 都勾选）：
+在 Vercel 项目 → **Settings → Environment Variables** 里添加下面每一项。  
+**Environment** 建议全选：Production、Preview、Development。
 
-- `GITHUB_OWNER`
-- `GITHUB_REPO`
-- `GITHUB_BRANCH`
-- `GITHUB_PERSONAL_ACCESS_TOKEN`
-- `NEXTAUTH_SECRET`
-- `NEXTAUTH_URL` → 先填 `https://你的项目.vercel.app`（部署后若用自定义域名再改）
-- `KV_REST_API_URL`
-- `KV_REST_API_TOKEN`
+| Name | Value | 说明 |
+|------|--------|------|
+| `GITHUB_OWNER` | 你的 GitHub 用户名或组织名 | 如 `oldorbe` |
+| `GITHUB_REPO` | 仓库名 | 如 `nini_website` |
+| `GITHUB_BRANCH` | `main` | 内容所在分支 |
+| `GITHUB_PERSONAL_ACCESS_TOKEN` | 你的 GitHub PAT | 需 **repo** 权限 |
+| `NEXTAUTH_SECRET` | 随机字符串 | 本地运行 `openssl rand -hex 32` 生成 |
+| `NEXTAUTH_URL` | `https://你的项目.vercel.app` | 部署后换成实际地址；用自定义域名则填域名 |
+| `KV_REST_API_URL` | Vercel KV 提供的 URL | 在 Storage → 你的 KV → .env 里复制 |
+| `KV_REST_API_TOKEN` | Vercel KV 提供的 Token | 同上 |
 
-若 KV 是“Connect to Project”连接的，这两项可能已自动加好。
+若 KV 是通过 **Connect to Project** 连到当前项目的，`KV_REST_API_URL` 和 `KV_REST_API_TOKEN` 可能已自动注入，无需再填。
 
-### 4. 部署
+### 4. Build & Output 设置（可选）
+
+项目里的 `admin-tina/vercel.json` 已写好，一般**不用在 Vercel 界面再改**。若你改过或想确认，可按下面核对：
+
+| 设置项 | 填什么 |
+|--------|--------|
+| **Root Directory** | `admin-tina`（必填，否则会从仓库根构建） |
+| **Framework Preset** | Next.js |
+| **Build Command** | 留空（用默认）或 `npm run build`。项目里使用 `tinacms build --skip-indexing`，避免构建时连 KV 超时；首次打开后台时会在运行时完成索引。 |
+| **Output Directory** | 留空（Next.js 自动） |
+| **Install Command** | 留空（用默认）或 `npm install --legacy-peer-deps` |
+
+若在 **Settings → General** 里没有单独改 Install/Build Command，Vercel 会使用 Root Directory 下 `vercel.json` 的配置。
+
+### 5. 部署
 
 点击 **Deploy**，等待构建完成。
 
-### 5. 首次访问
+### 6. 首次访问
 
 1. 部署完成后，打开 `https://你的项目.vercel.app`
 2. 进入后台：`https://你的项目.vercel.app/admin`
@@ -125,6 +159,90 @@
 
 ---
 
+## 六、认证方式说明
+
+当前项目配置使用 **Vercel Authentication** 进行用户认证。
+
+### 当前方式：Vercel Authentication（推荐）
+
+- **工作原理**：用户访问 `/admin` 时，先由 Vercel 验证身份，只有 Vercel 团队成员才能访问
+- **优点**：
+  - 无需管理独立的 TinaCMS 用户
+  - 使用 Vercel 账户登录，更安全
+  - 团队成员自动拥有访问权限
+- **要求**：必须在 Vercel 项目设置中**开启 Vercel Authentication**
+
+### 如何开启/配置 Vercel Authentication
+
+1. Vercel Dashboard → 你的项目 → **Settings** → **Deployment Protection**
+2. 找到 **Vercel Authentication** 部分
+3. 选择保护范围：
+   - **Standard Protection**：保护预览部署和生产环境
+   - **All Deployments**：保护所有部署
+   - **Only Preview Deployments**：只保护预览部署（不推荐用于 CMS）
+
+### 切换到用户名/密码认证（可选）
+
+如果你想关闭 Vercel Authentication，改用 TinaCMS 内置的用户名/密码登录，需要修改代码：
+
+1. **修改 `tina/config.tsx`**：
+   ```tsx
+   import {
+     UsernamePasswordAuthJSProvider,
+     TinaUserCollection,
+   } from "tinacms-authjs/dist/tinacms";
+   
+   // 将 authProvider 改为：
+   authProvider: isLocal
+     ? new LocalAuthProvider()
+     : new UsernamePasswordAuthJSProvider(),
+   
+   // 在 collections 中添加 TinaUserCollection：
+   collections: [
+     TinaUserCollection as any,
+     // ...其他 collections
+   ],
+   ```
+
+2. **修改 `pages/api/tina/[...routes].ts`**：
+   ```ts
+   import { TinaAuthJSOptions, AuthJsBackendAuthProvider } from "tinacms-authjs";
+   
+   // 将 authProvider 改为：
+   authProvider: isLocal
+     ? LocalBackendAuthProvider()
+     : AuthJsBackendAuthProvider({
+         authOptions: TinaAuthJSOptions({
+           databaseClient,
+           secret: process.env.NEXTAUTH_SECRET!,
+         }),
+       }),
+   ```
+
+3. **配置用户**：在 `content/users/index.json` 中设置用户，密码需要使用 SHA512 哈希：
+   ```json
+   {
+     "users": [
+       {
+         "username": "admin",
+         "name": "Admin",
+         "email": "admin@example.com",
+         "password": {
+           "value": "SHA512哈希值",
+           "passwordChangeRequired": false
+         }
+       }
+     ]
+   }
+   ```
+   生成哈希：`echo -n "你的密码" | sha512sum | cut -d ' ' -f1`
+
+4. **重新部署**并确保 Vercel Authentication 已关闭
+
+5. **重新索引**：本地运行 `npx tinacms build`（带正确的环境变量）来更新 Redis schema
+
+---
+
 ## 简要清单
 
 - [ ] GitHub PAT 已创建（repo 权限）
@@ -132,4 +250,5 @@
 - [ ] `NEXTAUTH_SECRET` 已用 `openssl rand -hex 32` 生成
 - [ ] Vercel 项目 Root Directory = `admin-tina`
 - [ ] 所有环境变量已在 Vercel 中填写
+- [ ] **Vercel Authentication 已开启**（当前认证方式需要）
 - [ ] 部署成功后用 `/admin` 登录测试

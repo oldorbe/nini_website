@@ -1,5 +1,5 @@
 import { defineConfig, LocalAuthProvider, AbstractAuthProvider } from "tinacms";
-import { installationsCollection } from "./collections/installations";
+import { imagesCollection } from "./collections/images";
 import { videotapesCollection } from "./collections/videotapes";
 import { textsCollection } from "./collections/texts";
 
@@ -74,7 +74,7 @@ export default defineConfig({
   },
   schema: {
     collections: [
-      installationsCollection,
+      imagesCollection,
       videotapesCollection,
       textsCollection,
     ],

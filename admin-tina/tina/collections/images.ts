@@ -2,16 +2,16 @@ import type { Collection } from "tinacms";
 import { ImageUrlPreviewField } from "../components/ImageUrlPreview";
 
 /**
- * Single-document JSON collection for content/installations.json.
+ * Single-document JSON collection for content/images.json.
  * Output shape must match: { "projects": [ { "id", "title", "year", "images": [ { "src", "alt" } ] } ] }
  * so the frontend (GitHub Pages) loadContent() continues to work unchanged.
  */
-export const installationsCollection: Collection = {
-  name: "installations",
-  label: "Installations",
+export const imagesCollection: Collection = {
+  name: "images",
+  label: "Images",
   path: "content",
   format: "json",
-  match: { include: "installations" },
+  match: { include: "images" },
   ui: {
     allowedActions: { create: false, delete: false },
   },

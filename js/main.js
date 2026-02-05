@@ -10,13 +10,13 @@ const SITE_TITLE = 'Artist Portfolio';
 
 /** Content paths (must match admin/config.yml and content/ files) */
 const CONTENT_PATHS = {
-    installations: 'content/installations.json',
+    images: 'content/images.json',
     videotapes: 'content/videotapes.json',
     texts: 'content/texts.json'
 };
 
 /** Fallback data when fetch fails (e.g. opening HTML from file://) */
-const FALLBACK_INSTALLATIONS = {
+const FALLBACK_IMAGES = {
     projects: [
         { id: 'punchdrunk', title: 'Punchdrunk', year: '2023', images: [{ src: 'https://picsum.photos/seed/punchdrunk1/1200/825', alt: 'Punchdrunk - View 1' }, { src: 'https://picsum.photos/seed/punchdrunk2/1200/825', alt: 'Punchdrunk - View 2' }, { src: 'https://picsum.photos/seed/punchdrunk3/1200/825', alt: 'Punchdrunk - View 3' }, { src: 'https://picsum.photos/seed/punchdrunk4/1200/825', alt: 'Punchdrunk - View 4' }, { src: 'https://picsum.photos/seed/punchdrunk5/1200/825', alt: 'Punchdrunk - View 5' }] },
         { id: 'dangling-participles', title: 'Dangling Participles', year: '2022', images: [{ src: 'https://picsum.photos/seed/dangE1/1200/825', alt: 'Dangling Participles - View 1' }, { src: 'https://picsum.photos/seed/dangling-participles2/1200/825', alt: 'Dangling Participles - View 2' }, { src: 'https://picsum.photos/seed/dangling-participles3/1200/825', alt: 'Dangling Participles - View 3' }, { src: 'https://picsum.photos/seed/dangling-participles4/1200/825', alt: 'Dangling Participles - View 4' }, { src: 'https://picsum.photos/seed/dangling-participles5/1200/825', alt: 'Dangling Participles - View 5' }] },
@@ -61,12 +61,12 @@ const FALLBACK_TEXTS = {
 
 /**
  * Load content JSON from path; on failure use fallback for that content type.
- * @param {string} path - e.g. 'content/installations.json'
+ * @param {string} path - e.g. 'content/images.json'
  * @returns {Promise<object>} - { projects } or { entries } depending on path
  */
 function loadContent(path) {
     const fallbacks = {
-        [CONTENT_PATHS.installations]: FALLBACK_INSTALLATIONS,
+        [CONTENT_PATHS.images]: FALLBACK_IMAGES,
         [CONTENT_PATHS.videotapes]: FALLBACK_VIDEOTAPES,
         [CONTENT_PATHS.texts]: FALLBACK_TEXTS
     };
@@ -90,12 +90,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /**
- * Render installations list from content into #installations-gallery
+ * Render images list from content into #images-gallery
  */
 function initInstallationsGallery() {
-    const container = document.getElementById('installations-gallery');
+    const container = document.getElementById('images-gallery');
     if (!container) return;
-    loadContent(CONTENT_PATHS.installations).then(function(data) {
+    loadContent(CONTENT_PATHS.images).then(function(data) {
         const projects = data.projects || [];
         container.innerHTML = projects.map(function(p) {
             const firstImg = (p.images && p.images[0]) ? p.images[0] : { src: '', alt: p.title };
@@ -142,10 +142,10 @@ function escapeHtml(s) {
 }
 
 /**
- * Fill header dropdowns and sidebar submenus from content (installations, videotapes, texts).
+ * Fill header dropdowns and sidebar submenus from content (images, videotapes, texts).
  */
 function initNavFromContent() {
-    function renderInstallations(projects) {
+    function renderImages(projects) {
         return (projects || []).map(function(p) {
             return '<li><a href="project-detail.html?id=' + encodeURIComponent(p.id) + '">' + escapeHtml(p.title) + '</a></li>';
         }).join('');
@@ -161,7 +161,7 @@ function initNavFromContent() {
         }).join('');
     }
     Promise.all([
-        loadContent(CONTENT_PATHS.installations),
+        loadContent(CONTENT_PATHS.images),
         loadContent(CONTENT_PATHS.videotapes),
         loadContent(CONTENT_PATHS.texts)
     ]).then(function(results) {
@@ -170,7 +170,7 @@ function initNavFromContent() {
         var txt = results[2].entries || [];
         var dropMenus = document.querySelectorAll('.main-nav .dropdown .dropdown-menu');
         if (dropMenus.length >= 4) {
-            dropMenus[0].innerHTML = renderInstallations(inst);
+            dropMenus[0].innerHTML = renderImages(inst);
             dropMenus[1].innerHTML = renderVideotapes(vid);
             dropMenus[3].innerHTML = renderTexts(txt);
         }
@@ -179,11 +179,11 @@ function initNavFromContent() {
             var sub = li.querySelector('ul.submenu');
             if (!a || !sub) return;
             var href = (a.getAttribute('href') || '');
-            if (href.indexOf('installations') !== -1) sub.innerHTML = renderInstallations(inst);
+            if (href.indexOf('images') !== -1) sub.innerHTML = renderImages(inst);
             else if (href.indexOf('videotapes') !== -1) sub.innerHTML = renderVideotapes(vid);
             else if (href.indexOf('texts') !== -1) sub.innerHTML = renderTexts(txt);
         });
-        document.querySelectorAll('[data-nav="installations"]').forEach(function(el) { el.innerHTML = renderInstallations(inst); });
+        document.querySelectorAll('[data-nav="images"]').forEach(function(el) { el.innerHTML = renderImages(inst); });
         document.querySelectorAll('[data-nav="videotapes"]').forEach(function(el) { el.innerHTML = renderVideotapes(vid); });
         document.querySelectorAll('[data-nav="texts"]').forEach(function(el) { el.innerHTML = renderTexts(txt); });
     });
@@ -417,7 +417,7 @@ function initSlider() {
 }
 
 /**
- * Project Detail Gallery - New version with side arrows (data from content/installations.json)
+ * Project Detail Gallery - New version with side arrows (data from content/images.json)
  */
 function initProjectGallery() {
     const galleryWrapper = document.querySelector('.project-gallery-wrapper');
@@ -425,7 +425,7 @@ function initProjectGallery() {
     if (galleryWrapper) {
         const urlParams = new URLSearchParams(window.location.search);
         const projectId = urlParams.get('id') || DEFAULT_PROJECT_ID;
-        loadContent(CONTENT_PATHS.installations).then(function(data) {
+        loadContent(CONTENT_PATHS.images).then(function(data) {
             const projects = data.projects || [];
             const current = projects.find(function(p) { return p.id === projectId; }) || projects[0];
             const images = (current && current.images && current.images.length) ? current.images : [];
@@ -558,7 +558,7 @@ function initNewProjectGallery(wrapper, images) {
 }
 
 /**
- * Initialize Project Navigation (Previous/Next, title, year - data from content/installations.json)
+ * Initialize Project Navigation (Previous/Next, title, year - data from content/images.json)
  */
 function initProjectNavigation() {
     const projectNavContainer = document.querySelector('.project-nav-container');
@@ -567,7 +567,7 @@ function initProjectNavigation() {
     const urlParams = new URLSearchParams(window.location.search);
     const projectId = urlParams.get('id') || DEFAULT_PROJECT_ID;
 
-    loadContent(CONTENT_PATHS.installations).then(function(data) {
+    loadContent(CONTENT_PATHS.images).then(function(data) {
         const projects = data.projects || [];
         const currentIndex = projects.findIndex(function(p) { return p.id === projectId; });
         if (currentIndex === -1) return;
