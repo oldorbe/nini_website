@@ -1,3 +1,4 @@
+import type { NextApiRequest, NextApiResponse } from "next";
 import { TinaNodeBackend, LocalBackendAuthProvider } from "@tinacms/datalayer";
 import { TinaAuthJSOptions, AuthJsBackendAuthProvider } from "tinacms-authjs";
 import databaseClient from "../../../tina/__generated__/databaseClient";
@@ -16,6 +17,6 @@ const handler = TinaNodeBackend({
   databaseClient,
 });
 
-export default (req: unknown, res: unknown) => {
+export default (req: NextApiRequest, res: NextApiResponse) => {
   return handler(req, res);
 };
