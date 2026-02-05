@@ -1,13 +1,13 @@
 # Decap CMS config - Artist Portfolio
 # See https://decapcms.org/docs/configuration-options/
-# Set backend.repo to your GitHub/GitLab repo (e.g. owner/repo-name) and configure Identity for Netlify.
+# Backend: GitHub + OAuth proxy (e.g. Cloudflare Worker). Replace base_url with your proxy URL.
 
 backend:
-  name: git-gateway
+  name: github
   repo: oldorbe/nini_website
   branch: main
-  # Use proxy: true when deploying on Netlify and using Netlify Identity
-  # proxy_url: /api/proxy (if using Netlify)
+  base_url: https://your-decap-proxy.workers.dev  # Replace with your Worker PROXY URL
+  auth_endpoint: /auth
 
 media_folder: content/uploads
 public_folder: /uploads
