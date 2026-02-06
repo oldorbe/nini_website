@@ -9,47 +9,74 @@ import { aboutCollection } from "./collections/about";
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === "true";
 
 /**
- * Custom Auth Provider that trusts Vercel Authentication.
- * When Vercel Authentication is enabled, users are already authenticated
- * by Vercel before reaching this app, so we just need to verify that.
+ * Password-based Auth Provider for self-hosted TinaCMS.
+ *
+ * Uses a simple password set via ADMIN_PASSWORD env var.
+ * Works on both Production and Preview deployments without
+ * relying on Vercel Authentication (which requires a paid plan
+ * to protect Production).
  */
-class VercelAuthProvider extends AbstractAuthProvider {
+class PasswordAuthProvider extends AbstractAuthProvider {
+  private loginPrompt: (() => Promise<string>) | null = null;
+
   async authenticate() {
-    // Vercel Authentication handles the login - check if user is authenticated
-    const response = await fetch("/.well-known/vercel-user-meta");
-    if (response.ok) {
-      return true;
+    // Check if already authenticated
+    const checkRes = await fetch("/api/auth/check");
+    if (checkRes.ok) {
+      const data = await checkRes.json();
+      if (data.authenticated) return true;
     }
-    // If not authenticated, Vercel will redirect to login
-    window.location.href = window.location.href;
+
+    // Prompt for password
+    const password = window.prompt("Enter admin password:");
+    if (!password) return false;
+
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      if (data.authenticated) {
+        // Reload to pick up the new session cookie
+        window.location.reload();
+        return true;
+      }
+    }
+
+    window.alert("Wrong password");
     return false;
   }
 
   async getUser() {
     try {
-      const response = await fetch("/.well-known/vercel-user-meta");
-      if (response.ok) {
-        const data = await response.json();
-        return {
-          id: data.id || "vercel-user",
-          name: data.name || data.email || "Vercel User",
-          email: data.email || "",
-          role: "user",
-        };
+      const res = await fetch("/api/auth/check");
+      if (res.ok) {
+        const data = await res.json();
+        if (data.authenticated) {
+          return {
+            id: "admin",
+            name: "Admin",
+            email: "",
+            role: "admin",
+          };
+        }
       }
-    } catch (e) {
-      console.log("Not authenticated via Vercel");
+    } catch {
+      // not authenticated
     }
     return false;
   }
 
   async getToken() {
-    return { id_token: "vercel-auth" };
+    return { id_token: "password-auth" };
   }
 
   async logout() {
-    // Vercel doesn't have a direct logout - user needs to log out from Vercel
-    window.location.href = "https://vercel.com/logout";
+    await fetch("/api/auth/logout", { method: "POST" });
+    window.location.reload();
   }
 
   async authorize() {
@@ -61,7 +88,7 @@ class VercelAuthProvider extends AbstractAuthProvider {
 export default defineConfig({
   authProvider: isLocal
     ? new LocalAuthProvider()
-    : new VercelAuthProvider(),
+    : new PasswordAuthProvider(),
   contentApiUrlOverride: "/api/tina/gql",
   build: {
     publicFolder: "public",
