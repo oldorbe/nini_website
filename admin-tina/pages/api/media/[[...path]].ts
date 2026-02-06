@@ -9,6 +9,9 @@ export const config = {
 
 function isAuthorized(req: NextApiRequest): boolean {
   if (isLocal) return true;
+  // On Vercel with Vercel Authentication enabled, requests that reach
+  // the serverless function have already passed Vercel's auth layer.
+  // We trust them. Check common Vercel headers as a safeguard.
   const hasVercelAuth =
     req.headers["x-vercel-id"] ||
     req.headers["x-forwarded-for"] ||
@@ -24,5 +27,18 @@ export default async function handler(
     res.status(401).json({ error: "Unauthorized" });
     return;
   }
-  await mediaRouteHandler(req, res);
+
+  // req.query.path is the catch-all segments from [[...path]]
+  // e.g. /api/media/list       → path = ["list"]
+  //      /api/media/list/sub   → path = ["list", "sub"]
+  //      /api/media/upload     → path = ["upload"]
+  //      /api/media            → path = undefined (empty)
+  const rawPath = req.query.path;
+  const segments: string[] = Array.isArray(rawPath)
+    ? rawPath
+    : rawPath
+      ? [rawPath]
+      : [];
+
+  await mediaRouteHandler(req, res, segments);
 }

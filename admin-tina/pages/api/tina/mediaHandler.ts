@@ -17,72 +17,56 @@ function parseMediaFolder(str: string): string {
   return s;
 }
 
-const MEDIA_API_PREFIX = "/api/media/";
-
-/** Parse path after /api/media/ from req.url */
-function getMediaPath(req: IncomingMessage): string {
+function getQueryParams(req: IncomingMessage): URLSearchParams {
   const url = req.url ?? "";
-  const idx = url.indexOf("?");
-  const pathPart = idx >= 0 ? url.slice(0, idx) : url;
-  if (!pathPart.startsWith(MEDIA_API_PREFIX)) return "";
-  return decodeURIComponent(pathPart.slice(MEDIA_API_PREFIX.length));
+  const q = url.indexOf("?");
+  return q >= 0 ? new URLSearchParams(url.slice(q)) : new URLSearchParams();
 }
 
-function getMediaPathFromMediaPrefix(req: IncomingMessage, prefix: string): string {
-  const full = getMediaPath(req);
-  if (!full.startsWith(prefix)) return "";
-  return full.slice(prefix.length);
-}
-
+/**
+ * List media files.
+ * @param segments  path segments after /api/media/, e.g. ["list"] or ["list", "subfolder"]
+ */
 export async function listMedia(
   req: IncomingMessage,
-  res: ServerResponse
+  res: ServerResponse,
+  segments: string[]
 ): Promise<void> {
-  const pathAfterMedia = getMediaPath(req);
-  const folder =
-    pathAfterMedia === "list" || pathAfterMedia === "list/"
-      ? ""
-      : parseMediaFolder(pathAfterMedia.startsWith("list/") ? pathAfterMedia.slice(5) : pathAfterMedia);
+  // segments[0] === "list"; remaining is the subfolder
+  const folder = parseMediaFolder(segments.slice(1).join("/"));
   const mediaFolder = getMediaFolder();
   const folderPath = path.join(mediaFolder, folder);
 
-  const limit = 20;
-  let cursor = 0;
-  const url = req.url ?? "";
-  const q = url.indexOf("?");
-  if (q >= 0) {
-    const params = new URLSearchParams(url.slice(q));
-    const l = params.get("limit");
-    const c = params.get("cursor");
-    if (c !== null) cursor = Number(c) || 0;
-  }
+  const params = getQueryParams(req);
+  const cursor = Number(params.get("cursor")) || 0;
+  const limit = Number(params.get("limit")) || 20;
 
   try {
     await fs.access(folderPath);
   } catch {
     res.statusCode = 200;
     res.setHeader("Content-Type", "application/json");
-    res.end(
-      JSON.stringify({ files: [], directories: [], cursor: null })
-    );
+    res.end(JSON.stringify({ files: [], directories: [], cursor: null }));
     return;
   }
 
   const entries = await fs.readdir(folderPath, { withFileTypes: true });
   const items = await Promise.all(
-    entries.map(async (ent) => {
-      const filePath = path.join(folderPath, ent.name);
-      const stat = await fs.stat(filePath);
-      let src = `/${ent.name}`;
-      if (folder) src = `/${folder}${src}`;
-      if (MEDIA_ROOT) src = `/${MEDIA_ROOT}${src}`;
-      return {
-        isFile: stat.isFile(),
-        size: stat.size,
-        src,
-        filename: ent.name,
-      };
-    })
+    entries
+      .filter((ent) => ent.name !== ".gitkeep")
+      .map(async (ent) => {
+        const filePath = path.join(folderPath, ent.name);
+        const stat = await fs.stat(filePath);
+        let src = `/${ent.name}`;
+        if (folder) src = `/${folder}${src}`;
+        if (MEDIA_ROOT) src = `/${MEDIA_ROOT}${src}`;
+        return {
+          isFile: stat.isFile(),
+          size: stat.size,
+          src,
+          filename: ent.name,
+        };
+      })
   );
 
   const sorted = items.sort((a, b) => {
@@ -98,24 +82,27 @@ export async function listMedia(
 
   res.statusCode = 200;
   res.setHeader("Content-Type", "application/json");
-  res.end(
-    JSON.stringify({ files, directories, cursor: nextCursor })
-  );
+  res.end(JSON.stringify({ files, directories, cursor: nextCursor }));
 }
 
+/**
+ * Delete a media file.
+ * @param segments  path segments after /api/media/, e.g. ["content", "uploads", "foo.jpg"]
+ */
 export async function deleteMedia(
-  req: IncomingMessage,
-  res: ServerResponse
+  _req: IncomingMessage,
+  res: ServerResponse,
+  segments: string[]
 ): Promise<void> {
-  const pathAfterMedia = getMediaPath(req);
-  if (!pathAfterMedia) {
+  const relativePath = segments.join("/");
+  if (!relativePath) {
     res.statusCode = 400;
     res.setHeader("Content-Type", "application/json");
     res.end(JSON.stringify({ ok: false, message: "missing path" }));
     return;
   }
   const mediaFolder = getMediaFolder();
-  const filePath = path.join(mediaFolder, pathAfterMedia);
+  const filePath = path.join(mediaFolder, relativePath);
 
   try {
     await fs.stat(filePath);
@@ -135,13 +122,19 @@ export async function deleteMedia(
   }
 }
 
+/**
+ * Upload a media file (multipart).
+ * @param segments  path segments after /api/media/upload/, e.g. [] or ["subfolder"]
+ */
 export async function uploadMedia(
   req: IncomingMessage,
-  res: ServerResponse
+  res: ServerResponse,
+  segments: string[]
 ): Promise<void> {
-  const pathAfterUpload = getMediaPathFromMediaPrefix(req, "upload/");
+  // segments[0] === "upload"; rest is the destination subfolder
+  const subPath = segments.slice(1).join("/");
   const mediaFolder = getMediaFolder();
-  const destDir = path.join(mediaFolder, pathAfterUpload);
+  const destDir = path.join(mediaFolder, subPath);
 
   const busboy = (await import("busboy")).default;
   const bb = busboy({ headers: (req as any).headers });
@@ -180,26 +173,31 @@ export async function uploadMedia(
   req.pipe(bb);
 }
 
+/**
+ * Route media requests based on parsed path segments.
+ * @param segments  e.g. ["list"], ["list","subfolder"], ["upload"], ["upload","subfolder"], ["content","uploads","foo.jpg"]
+ */
 export async function mediaRouteHandler(
   req: IncomingMessage,
-  res: ServerResponse
+  res: ServerResponse,
+  segments: string[]
 ): Promise<void> {
-  const pathAfterMedia = getMediaPath(req);
+  const action = segments[0] ?? "";
 
-  if (req.method === "GET" && (pathAfterMedia === "list" || pathAfterMedia.startsWith("list/"))) {
-    await listMedia(req, res);
+  if (req.method === "GET" && action === "list") {
+    await listMedia(req, res, segments);
     return;
   }
-  if (req.method === "DELETE" && pathAfterMedia && !pathAfterMedia.startsWith("list") && !pathAfterMedia.startsWith("upload")) {
-    await deleteMedia(req, res);
+  if (req.method === "POST" && action === "upload") {
+    await uploadMedia(req, res, segments);
     return;
   }
-  if (req.method === "POST" && pathAfterMedia.startsWith("upload")) {
-    await uploadMedia(req, res);
+  if (req.method === "DELETE" && action !== "list" && action !== "upload") {
+    await deleteMedia(req, res, segments);
     return;
   }
 
   res.statusCode = 404;
   res.setHeader("Content-Type", "application/json");
-  res.end(JSON.stringify({ error: "media route not found" }));
+  res.end(JSON.stringify({ error: "media route not found", action, segments }));
 }
