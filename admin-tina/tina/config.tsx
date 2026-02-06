@@ -68,13 +68,12 @@ export default defineConfig({
     outputFolder: "admin",
   },
   media: {
-    // Repo-based media: files stored in repo at content/uploads (GitHub).
-    // For Next.js, publicFolder must be "public"; mediaRoot is relative to it.
-    // Ensure admin-tina/public/content is a symlink to ../content so public/content/uploads exists.
-    tina: {
-      publicFolder: "public",
-      mediaRoot: "content/uploads",
-      static: false, // allow upload/delete in editor
+    // Custom self-hosted media store: always calls /media/* routes on our own backend.
+    // The built-in TinaMediaStore switches to Tina Cloud assets API in production,
+    // which doesn't work for self-hosted. This custom store avoids that entirely.
+    loadCustomStore: async () => {
+      const pack = await import("./self-hosted-media-store");
+      return pack.default;
     },
   },
   schema: {
