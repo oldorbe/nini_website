@@ -25,6 +25,18 @@ export default class SelfHostedMediaStore implements MediaStore {
     return "/media";
   }
 
+  /**
+   * Convert a stored media path to a previewable URL.
+   * TinaCMS ImageField calls this to show thumbnails.
+   */
+  previewSrc(src: string): string {
+    if (!src) return "";
+    // Already a full URL
+    if (/^https?:\/\//i.test(src)) return src;
+    // Relative path – return as-is (works for same-origin)
+    return src.startsWith("/") ? src : `/${src}`;
+  }
+
   async persist(files: MediaUploadOptions[]): Promise<Media[]> {
     const uploaded: Media[] = [];
 
