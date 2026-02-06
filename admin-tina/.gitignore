@@ -14,6 +14,9 @@ out
 # Tina generated
 tina/__generated__
 
+# Local-only: symlink for media (content/uploads). Do not deploy to Vercel.
+public/content
+
 # Misc
 *.log
 .DS_Store
